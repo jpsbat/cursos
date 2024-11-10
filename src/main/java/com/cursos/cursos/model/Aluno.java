@@ -1,11 +1,16 @@
 package com.cursos.cursos.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Aluno {
     private String nome;
     private int cursosConcluidos;
     private boolean isPremium;
     private boolean recebeuVoucher;
     private int moedas;
+    private List<Voucher> vouchers;
+    private List<Projeto> projetos;
 
     public Aluno(String nome, int cursosConcluidos) {
         this.nome = nome;
@@ -13,6 +18,8 @@ public class Aluno {
         this.isPremium = false;
         this.recebeuVoucher = false;
         this.moedas = 0;
+        this.vouchers = new ArrayList<>();
+        this.projetos = new ArrayList<>();
     }
 
     public String getNome() {
@@ -45,5 +52,21 @@ public class Aluno {
 
     public void setMoedas(int moedas) {
         this.moedas = moedas;
+    }
+
+    public List<Voucher> getVouchers() {
+        return vouchers;
+    }
+
+    public List<Projeto> getProjetos() {
+        return projetos;
+    }
+
+    public void adicionarVoucher(Voucher voucher) {
+        this.vouchers.add(voucher);
+    }
+
+    public void inscreverEmProjeto(Projeto projeto) {
+        this.projetos.add(projeto);
     }
 }

@@ -1,15 +1,19 @@
 package com.cursos.cursos.tests;
 
 import com.cursos.cursos.model.Aluno;
+import com.cursos.cursos.model.Projeto;
 import com.cursos.cursos.service.AlunoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class AlunoControllerTest {
 
     @Autowired
@@ -28,9 +32,10 @@ public class AlunoControllerTest {
     @Test
     void alunoRecebeMoedasAposProjetoReal() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
+        Projeto projeto = new Projeto(1L, "Projeto Exemplo");
         
-        alunoService.inscreverEmProjeto(aluno);
-        alunoService.finalizarProjeto(aluno);
+        alunoService.inscreverEmProjeto(aluno, projeto);
+        alunoService.finalizarProjeto(aluno, projeto);
         
         assertEquals(3, aluno.getMoedas());
     }
