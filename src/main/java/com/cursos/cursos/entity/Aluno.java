@@ -26,7 +26,6 @@ public class Aluno {
     @Embedded
     private Voucher voucher;
 
-    // Construtor padrão para JPA
     protected Aluno() {}
 
     public Aluno(String nome, int cursosConcluidos) {

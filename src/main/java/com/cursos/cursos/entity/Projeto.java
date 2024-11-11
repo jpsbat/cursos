@@ -23,7 +23,12 @@ public class Projeto {
         this.nome = nome;
     }
 
-    // Getters e Setters
+    public Projeto(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -48,7 +53,7 @@ public class Projeto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Projeto)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Projeto projeto = (Projeto) o;
         return Objects.equals(id, projeto.id);
     }
