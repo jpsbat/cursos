@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
+@ActiveProfiles("staging")
 class UserStoryTest {
 
     private AlunoService alunoService;
@@ -30,7 +30,7 @@ class UserStoryTest {
     void alunoRecebeMoedasAposProjetoReal() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
         Projeto projeto = new Projeto(1L, "Projeto Exemplo");
-        
+
         alunoService.inscreverEmProjeto(aluno, projeto);
         alunoService.finalizarProjeto(aluno, projeto);
         assertEquals(3, aluno.getMoedas(), "O aluno não recebeu as moedas após concluir o projeto!");
