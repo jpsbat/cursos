@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("staging")
+@ActiveProfiles("test")
 public class AlunoControllerTest {
 
   @Autowired
