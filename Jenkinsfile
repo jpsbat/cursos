@@ -1,33 +1,63 @@
 pipeline {
     agent any
+
     environment {
-        SPRING_PROFILE = 'staging'
-        DOCKER_IMAGE = 'jpsbat/cursos:staging'
+        ENVIRONMENT = "${params.ENVIRONMENT ?: 'staging'}"Docker Hub
+        DOCKER_IMAGE = "jpsbat/cursos:${ENVIRONMENT}"
     }
+
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['staging', 'production'], description: 'Selecionar o ambiente de deploy')
+    }
+
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/jpsbat/cursos'
-            }
-        }
         stage('Build') {
             steps {
-                sh 'mvn clean package -P staging'
+                script {
+                    sh 'mvn clean package -P test'
+                }
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
             }
         }
+
         stage('Push Docker Image') {
             steps {
-                sh "docker push ${DOCKER_IMAGE}"
+                script {
+                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
+                        sh "docker push ${DOCKER_IMAGE}"
+                    }
+                }
             }
         }
-        stage('Deploy to Staging') {
+
+        stage('Deploy') {
             steps {
-                sh "docker compose -f docker-compose.staging.yml up -d"
+                script {
+                    if (ENVIRONMENT == 'staging') {
+                        sh "docker-compose -f docker-compose-staging.yml up -d"
+                    } else if (ENVIRONMENT == 'production') {
+                        sh "docker-compose -f docker-compose-prod.yml up -d"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                if (ENVIRONMENT == 'staging') {
+                    echo "Deploy realizado no ambiente de staging."
+                } else if (ENVIRONMENT == 'production') {
+                    echo "Deploy realizado no ambiente de production."
+                }
             }
         }
     }
