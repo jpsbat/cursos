@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        ENVIRONMENT = "${params.ENVIRONMENT ?: 'staging'}"Docker Hub
+        ENVIRONMENT = "${params.ENVIRONMENT ?: 'staging'}"
         DOCKER_IMAGE = "jpsbat/cursos:${ENVIRONMENT}"
+        DOCKER_CREDENTIALS_ID = 'jpsbat'
     }
 
     parameters {
@@ -14,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package -P test'
+                    bat 'mvn clean package -Dspring.profiles.active=test'
                 }
             }
         }
@@ -22,7 +23,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    bat "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
@@ -31,7 +32,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        sh "docker push ${DOCKER_IMAGE}"
+                        bat "docker push ${DOCKER_IMAGE}"
                     }
                 }
             }
@@ -41,9 +42,9 @@ pipeline {
             steps {
                 script {
                     if (ENVIRONMENT == 'staging') {
-                        sh "docker-compose -f docker-compose-staging.yml up -d"
+                        bat "docker-compose -f docker-compose-staging.yml up -d"
                     } else if (ENVIRONMENT == 'production') {
-                        sh "docker-compose -f docker-compose-prod.yml up -d"
+                        bat "docker-compose -f docker-compose-prod.yml up -d"
                     }
                 }
             }
