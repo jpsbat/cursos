@@ -16,36 +16,36 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class AlunoControllerTest {
 
-  @Autowired
-  private AlunoService alunoService;
+    @Autowired
+    private AlunoService alunoService;
 
-  @Test
-  void alunoPremiumRecebeVoucher() {
-    Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
+    @Test
+    void alunoPremiumRecebeVoucher() {
+        Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
+        
+        ResponseEntity<String> response = alunoService.promoverParaPremium(aluno);
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(alunoService.verificarSeRecebeuVoucher(aluno));
+    }
 
-    ResponseEntity<String> response = alunoService.promoverParaPremium(aluno);
+    @Test
+    void alunoRecebeMoedasAposProjetoReal() {
+        Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
+        Projeto projeto = new Projeto(1L, "Projeto Exemplo");
+        
+        alunoService.inscreverEmProjeto(aluno, projeto);
+        alunoService.finalizarProjeto(aluno, projeto);
+        
+        assertEquals(3, aluno.getMoedas());
+    }
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertTrue(alunoService.verificarSeRecebeuVoucher(aluno));
-  }
-
-  @Test
-  void alunoRecebeMoedasAposProjetoReal() {
-    Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
-    Projeto projeto = new Projeto(1L, "Projeto Exemplo");
-
-    alunoService.inscreverEmProjeto(aluno, projeto);
-    alunoService.finalizarProjeto(aluno, projeto);
-
-    assertEquals(3, aluno.getMoedas());
-  }
-
-  @Test
-  void alunoRecebeNotificacaoParaProjetosReais() {
-    Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
-
-    alunoService.promoverParaPremium(aluno);
-
-    assertTrue(alunoService.notificarProjetosReais(aluno));
-  }
+    @Test
+    void alunoRecebeNotificacaoParaProjetosReais() {
+        Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
+        
+        alunoService.promoverParaPremium(aluno);
+        
+        assertTrue(alunoService.notificarProjetosReais(aluno));
+    }
 }

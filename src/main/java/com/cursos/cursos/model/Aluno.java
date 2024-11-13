@@ -29,6 +29,10 @@ public class Aluno {
     public int getCursosConcluidos() {
         return cursosConcluidos;
     }
+    
+    public void setCursosConcluidos(int isConcluido) {
+        this.cursosConcluidos = isConcluido;
+    }
 
     public boolean isPremium() {
         return isPremium;

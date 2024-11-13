@@ -30,7 +30,7 @@ class BDDTest {
     void givenPossuoVoucherWhenEscolhoProjetoThenSouInscritoAutomaticamente() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
         Projeto projeto = new Projeto(1L, "Projeto Exemplo");
-
+        
         alunoService.promoverParaPremium(aluno);
         alunoService.inscreverEmProjeto(aluno, projeto);
         assertTrue(true);
@@ -40,7 +40,7 @@ class BDDTest {
     void givenParticipeiDeProjetoWhenConcluiThenReceboMoedas() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
         Projeto projeto = new Projeto(1L, "Projeto Exemplo");
-
+        
         alunoService.inscreverEmProjeto(aluno, projeto);
         alunoService.finalizarProjeto(aluno, projeto);
         assertEquals(3, aluno.getMoedas());

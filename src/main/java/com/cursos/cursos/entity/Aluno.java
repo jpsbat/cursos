@@ -26,7 +26,7 @@ public class Aluno {
     @Embedded
     private Voucher voucher;
 
-    protected Aluno() {}
+    public Aluno() {}
 
     public Aluno(String nome, int cursosConcluidos) {
         this.nome = nome;

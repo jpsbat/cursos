@@ -22,9 +22,9 @@ public class AlunoControllerTest {
     @Test
     void alunoPremiumRecebeVoucher() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
-
+        
         ResponseEntity<String> response = alunoService.promoverParaPremium(aluno);
-
+        
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(alunoService.verificarSeRecebeuVoucher(aluno));
     }
@@ -33,19 +33,19 @@ public class AlunoControllerTest {
     void alunoRecebeMoedasAposProjetoReal() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
         Projeto projeto = new Projeto(1L, "Projeto Exemplo");
-
+        
         alunoService.inscreverEmProjeto(aluno, projeto);
         alunoService.finalizarProjeto(aluno, projeto);
-
+        
         assertEquals(3, aluno.getMoedas());
     }
 
     @Test
     void alunoRecebeNotificacaoParaProjetosReais() {
         Aluno aluno = new Aluno("Vinícius Ribeiro", 12);
-
+        
         alunoService.promoverParaPremium(aluno);
-
+        
         assertTrue(alunoService.notificarProjetosReais(aluno));
     }
 }
